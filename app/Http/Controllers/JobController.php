@@ -4,9 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Job;
-
-
-
+use App\Http\Requests\Job\StoreJobRequest;
 
 class JobController extends Controller
 {
@@ -21,5 +19,12 @@ class JobController extends Controller
 
     public function create() {
         return view('jobs.create');
+    }
+
+    public function store(StoreJobRequest $request) {
+        $formData = $request->validated();
+
+        Job::create($formData);
+        return redirect("/")->with('message', 'Job created successfully');
     }
 }

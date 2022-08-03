@@ -12,6 +12,7 @@
           crossorigin="anonymous"
           referrerpolicy="no-referrer"
       />
+      <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
       <script src="https://cdn.tailwindcss.com"></script>
       <script>
           tailwind.config = {
@@ -28,6 +29,7 @@
   </head>
   <body class="mb-48">
     @include('layouts.navbar')
+    <x-flash-message />
     {{ $slot }}
 
     @include('layouts.footer')
