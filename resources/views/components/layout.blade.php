@@ -30,6 +30,6 @@
     @include('layouts.navbar')
     {{ $slot }}
 
-
+    @include('layouts.footer')
   </body>
 </html>
