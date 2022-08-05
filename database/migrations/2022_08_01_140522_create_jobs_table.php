@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('location');
             $table->string('email');
             $table->string('website');
-            $table->string('img_url')->nullable();
+            $table->string('logo')->nullable();
             $table->timestamps();
         });
     }

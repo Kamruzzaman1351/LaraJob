@@ -22,9 +22,25 @@ class JobController extends Controller
     }
 
     public function store(StoreJobRequest $request) {
-        $formData = $request->validated();
-
+        $formData = $request->validated();        
+        if($request->hasFile('logo')) {
+            $fileName = $this->fileName($request->file('logo'));
+            $path = $request->file('logo')->storeAs('public/images', $fileName);
+            $formData['logo'] = $fileName;
+            // dd($path);
+        }
+        // dd($formData);
         Job::create($formData);
         return redirect("/")->with('message', 'Job created successfully');
+    }
+
+    
+
+    public function fileName ($file) {
+        $fileName = $file->getClientOriginalName();
+        $fileN = pathinfo($fileName, PATHINFO_FILENAME);
+        $fileExtention = $file->getClientOriginalExtension();
+        $fileNameToStore = $fileN . '_' . time(). '.' . $fileExtention;
+        return $fileNameToStore;
     }
 }

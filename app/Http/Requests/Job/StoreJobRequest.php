@@ -30,7 +30,8 @@ class StoreJobRequest extends FormRequest
             'website' => 'required',
             'email' => 'required | email',
             'description' => 'required | min:10 | max:300',
-            'tags' => 'required'
+            'tags' => 'required',
+            'logo' => 'mimes:jpeg,png,jpg,gif'
         ];
     }
 

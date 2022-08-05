@@ -7,7 +7,7 @@
       <div class="flex flex-col items-center justify-center text-center">
         <img
           class="w-48 mr-6 mb-6"
-          src="images/acme.png"
+          src="{{$job->logo ? asset('storage' . $job->logo) : ''}}"
           alt=""
         />
 
