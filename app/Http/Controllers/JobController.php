@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Job;
 use App\Http\Requests\Job\StoreJobRequest;
-
+use App\Http\Requests\Job\UpdateJobRequest;
+use Illuminate\Validation\ValidationException;
 class JobController extends Controller
 {
     public function index(Request $request) {
@@ -37,6 +38,31 @@ class JobController extends Controller
     public function edit($id) {
         $job = Job::findOrFail($id);
         return view('jobs.edit', ['job' => $job]);
+    }
+
+    public function update(UpdateJobRequest $request, $id) {
+        $formData = $request->validated();
+        if($request->hasFile('logo')) {
+            $fileName = $this->fileName($request->file('logo'));
+            $path = $request->file('logo')->storeAs('public/images', $fileName);
+            $formData['logo'] = $fileName;
+        }
+        $job = Job::findOrFail($id);
+        // Problem to Fix
+        // if(!$job->isDirty(['title', 'company', 'location', 'website', 'email', 'description', 'tags'])) {
+        //     $error = ValidationException::withMessages([
+        //         "You did not change anything"
+        //     ]);
+        //     throw $error; 
+            
+        // }
+        $job->update($formData);
+        return redirect("/jobs/$id")->with('message', 'Job updated successfully');
+    }
+
+    public function delete(Job $job) {
+        $job->delete();
+        return redirect('/')->with('message', 'Job Deleted Successfully');
     }
 
     public function fileName ($file) {
