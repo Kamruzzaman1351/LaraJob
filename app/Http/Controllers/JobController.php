@@ -34,7 +34,10 @@ class JobController extends Controller
         return redirect("/")->with('message', 'Job created successfully');
     }
 
-    
+    public function edit($id) {
+        $job = Job::findOrFail($id);
+        return view('jobs.edit', ['job' => $job]);
+    }
 
     public function fileName ($file) {
         $fileName = $file->getClientOriginalName();
