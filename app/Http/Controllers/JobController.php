@@ -30,6 +30,7 @@ class JobController extends Controller
             $formData['logo'] = $fileName;
             // dd($path);
         }
+        $formData['user_id'] = auth()->id();
         // dd($formData);
         Job::create($formData);
         return redirect("/")->with('message', 'Job created successfully');
@@ -37,6 +38,9 @@ class JobController extends Controller
 
     public function edit($id) {
         $job = Job::findOrFail($id);
+        if($job->user_id != auth()->id()) {
+            abort(403, 'You do not have permission to Edit');
+        }
         return view('jobs.edit', ['job' => $job]);
     }
 
@@ -56,15 +60,22 @@ class JobController extends Controller
         //     throw $error; 
             
         // }
+        if($job->user_id != auth()->user()->id) {
+            abort(403, 'You do not have permission to Edit');
+        } 
         $job->update($formData);
         return redirect("/jobs/$id")->with('message', 'Job updated successfully');
     }
 
     public function delete(Job $job) {
+        if($job->user_id != auth()->id()) {
+            abort(403, 'You do not have permission to Delete');
+        }
         $job->delete();
         return redirect('/')->with('message', 'Job Deleted Successfully');
     }
 
+    
     public function fileName ($file) {
         $fileName = $file->getClientOriginalName();
         $fileN = pathinfo($fileName, PATHINFO_FILENAME);

@@ -28,7 +28,7 @@
                   {{ $job->description}}
                 </p>
 
-                <a
+                <a target="_blank"
                   href="mailto:{{$job->email}}"
                   class="block bg-laravel text-white mt-6 py-2 rounded-xl hover:opacity-80">
                   <i class="fa-solid fa-envelope"></i>
@@ -46,16 +46,18 @@
             </div>
         </div>
       </div>
-      <x-card class="mt-4 p-2 flex space-x-6">
-        <a href="/jobs/{{$job->id}}/edit">
-          <i class="fa-solid fa-pencil"></i> Edit
-        </a>
-        <form method="POST" action="/jobs/{{$job->id}}">
-          @csrf
-          @method('DELETE')
-          <button class="text-red-500"><i class="fa-solid fa-trash"></i> Delete</button>
-        </form>
-      </x-card>
+      @if ($job->user_id == auth()->id())
+        <x-card class="mt-4 p-2 flex space-x-6">
+          <a href="/jobs/{{$job->id}}/edit">
+            <i class="fa-solid fa-pencil"></i> Edit
+          </a>
+          <form method="POST" action="/jobs/{{$job->id}}">
+            @csrf
+            @method('DELETE')
+            <button class="text-red-500"><i class="fa-solid fa-trash"></i> Delete</button>
+          </form>
+        </x-card>          
+      @endif
     </x-card>
   </div>
 </x-layout>
