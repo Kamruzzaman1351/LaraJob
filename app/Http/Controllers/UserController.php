@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Mail\WelcomeEmail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class UserController extends Controller
 {
@@ -25,6 +27,18 @@ class UserController extends Controller
         $formData['password'] = bcrypt($formData['password']);
 
         $user = User::create($formData);
+        $mailInfo = [
+            'name' => $user->name,
+            'title' => 'Thank for signup with Laravel Job Website',
+            'body' => 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+            consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+            cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+            proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+            'user' => 'Kamruzzaman',
+        ];
+        Mail::to($user->email)->send(new WelcomeEmail($mailInfo));
         auth()->login($user);
         return redirect('/')->with('message', 'Registration Complete');
 
