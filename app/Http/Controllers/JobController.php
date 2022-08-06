@@ -75,6 +75,12 @@ class JobController extends Controller
         return redirect('/')->with('message', 'Job Deleted Successfully');
     }
 
+    public function userJobs() {
+        // $jobs = Job::where('user_id', auth()->user()->id)->get();
+        $jobs = Job::whereBelongsTo(auth()->user())->get();
+        return view('user.job-list', ['jobs' => $jobs]);
+            
+    }
     
     public function fileName ($file) {
         $fileName = $file->getClientOriginalName();

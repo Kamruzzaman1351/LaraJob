@@ -12,7 +12,7 @@
         </span>
       </li>
       <li>
-        <a href="/jobs/manage" class="hover:text-laravel"><i class="fa-solid fa-gear"></i> Manage Jobs</a>
+        <a href="/users/jobs" class="hover:text-laravel"><i class="fa-solid fa-gear"></i> Manage Jobs</a>
       </li>
       <li>
         <form class="inline" method="POST" action="/logout">
