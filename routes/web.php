@@ -5,7 +5,7 @@ use App\Http\Controllers\JobController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\JobApplyController;
 Route::get('/', [JobController::class, 'index']);
-Route::get('/jobs/create', [JobController::class, 'create'])->middleware('auth');
+Route::get('/jobs/create', [JobController::class, 'create'])->middleware('auth')->name('jobs.create');
 Route::get('/jobs/{job}', [JobController::class, 'show']);
 Route::post('/jobs', [JobController::class, 'store'])->middleware('auth');
 Route::get('/jobs/{job}/edit', [JobController::class, 'edit'])->middleware('auth');

@@ -7,8 +7,14 @@ use App\Models\Job;
 use App\Http\Requests\Job\StoreJobRequest;
 use App\Http\Requests\Job\UpdateJobRequest;
 use Illuminate\Validation\ValidationException;
+use App\lib\FileUploader;
 class JobController extends Controller
 {
+    public $fileUploader;
+    public function __construct(FileUploader $fileUploader)
+    {
+        $this->fileUploader = $fileUploader;
+    }
     public function index(Request $request) {
         $jobs = Job::latest()->filter(request(['search', 'tag']))->paginate(10);
         // dd($jobs);
@@ -26,14 +32,16 @@ class JobController extends Controller
     public function store(StoreJobRequest $request) {
         $formData = $request->validated();        
         if($request->hasFile('logo')) {
-            $fileName = $this->fileName($request->file('logo'));
+            $fileName = $this->fileUploader->fileName($request->file('logo'));
             $path = $request->file('logo')->storeAs('public/images', $fileName);
             $formData['logo'] = $fileName;
             // dd($path);
         }
         $formData['user_id'] = auth()->id();
         // dd($formData);
-        Job::create($formData);
+        $job = new Job;
+        $job->forceFill($formData);
+        $job->save();
         return redirect("/")->with('message', 'Job created successfully');
     }
 
@@ -45,20 +53,21 @@ class JobController extends Controller
     public function update(UpdateJobRequest $request, Job $job) {
         $formData = $request->validated();
         if($request->hasFile('logo')) {
-            $fileName = $this->fileName($request->file('logo'));
+            $fileName = $this->fileUploader->fileName($request->file('logo'));
             $path = $request->file('logo')->storeAs('public/images', $fileName);
             $formData['logo'] = $fileName;
         }
-        // Problem to Fix
-        // if(!$job->isDirty(['title', 'company', 'location', 'website', 'email', 'description', 'tags'])) {
-        //     $error = ValidationException::withMessages([
-        //         "You did not change anything"
-        //     ]);
-        //     throw $error; 
-            
-        // }
+
         abort_if($job->user_id != auth()->user()->id, 403, 'You do not have permission to Edit');
-        $job->update($formData);
+        // $job->update($formData);
+        $job->forceFill($formData);
+        if(!$job->isDirty()) {
+            $error = ValidationException::withMessages([
+                "You did not change anything"
+            ]);
+            throw $error;
+        };
+        $job->save();
         return redirect("/jobs/$job->id")->with('message', 'Job updated successfully');
     }
 
@@ -76,12 +85,5 @@ class JobController extends Controller
         return view('user.job-list', ['jobs' => $jobs]);
             
     }
-    
-    public function fileName ($file) {
-        $fileName = $file->getClientOriginalName();
-        $fileN = pathinfo($fileName, PATHINFO_FILENAME);
-        $fileExtention = $file->getClientOriginalExtension();
-        $fileNameToStore = $fileN . '_' . time(). '.' . $fileExtention;
-        return $fileNameToStore;
-    }
+
 }
