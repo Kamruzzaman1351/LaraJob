@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\JobController;
 use App\Http\Controllers\UserController;
-
+use App\Http\Controllers\JobApplyController;
 Route::get('/', [JobController::class, 'index']);
 Route::get('/jobs/create', [JobController::class, 'create'])->middleware('auth');
 Route::get('/jobs/{job}', [JobController::class, 'show']);
@@ -17,3 +17,4 @@ Route::post('/users', [UserController::class, 'store']);
 Route::get('/users/jobs', [JobController::class, 'userJobs']);
 Route::post('/users/authenticate', [UserController::class, 'authenticate']);
 Route::post('/logout', [UserController::class, 'logout'])->middleware('auth');
+Route::get('/apply/{job}', [JobApplyController::class, 'apply'])->middleware('auth');
