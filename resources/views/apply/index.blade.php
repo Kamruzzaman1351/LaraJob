@@ -8,7 +8,7 @@
         <p class="mb-4">{{$job->description}}</p>
       </header>
 
-      <form action="/apply" method="POST" enctype="multipart/form-data">
+      <form action="/apply/{{$job->id}}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="mb-6">
           <label for="name" class="inline-block text-lg mb-2">
