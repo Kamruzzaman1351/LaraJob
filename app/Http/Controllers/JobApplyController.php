@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Job;
-use Illuminate\Http\Request;
-use App\Http\Requests\Apply\StoreApplyJobRequest;
-use App\lib\FileUploader;
+use App\Models\User;
 use App\Models\ApplyJob;
+use App\lib\FileUploader;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Notification;
+use App\Notifications\ApplyNotification;
+use App\Http\Requests\Apply\StoreApplyJobRequest;
 
 class JobApplyController extends Controller
 {
@@ -26,6 +29,12 @@ class JobApplyController extends Controller
         $apply = new ApplyJob();
         $apply->forceFill($formData);
         $apply->save();
+        $user = User::find($job->user_id);
+        $info = [
+            'name' => $apply->name,
+            'job_title' => $job->title,
+        ];
+        Notification::send($user, new ApplyNotification($info));
         return redirect("/jobs/$job->id")->with('message', "Application Complete");
 
     }

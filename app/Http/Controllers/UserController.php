@@ -66,4 +66,10 @@ class UserController extends Controller
         $request->session()->regenerateToken();
         return redirect('/')->with('message', 'You are logout now');
     }
+
+    public function notification() {
+        $notifications = auth()->user()->unreadNotifications;
+        // dd($notifications);
+        return view('notifications.index', ['notifications' => $notifications]);
+    }
 }

@@ -12,13 +12,16 @@
         </span>
       </li>
       <li>
-        <a href="/users/jobs" class="hover:text-laravel"><i class="fa-solid fa-gear"></i> Manage Jobs</a>
+        <a href="/users/jobs" class="hover:text-laravel"><i class="fa-solid fa-gear"></i> Jobs</a>
+      </li>
+      <li>
+        <a href="/user/notification" class="hover:text-laravel"><i class="fa-solid fa-bell"></i> </a>
       </li>
       <li>
         <form class="inline" method="POST" action="/logout">
           @csrf
           <button type="submit">
-            <i class="fa-solid fa-door-closed"></i> Logout
+            <i class="fa-solid fa-sign-out"></i>
           </button>
         </form>
       </li>

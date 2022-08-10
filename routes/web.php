@@ -19,3 +19,4 @@ Route::post('/users/authenticate', [UserController::class, 'authenticate']);
 Route::post('/logout', [UserController::class, 'logout'])->middleware('auth');
 Route::get('/apply/{job}', [JobApplyController::class, 'apply'])->middleware('auth');
 Route::post('/apply/{job}', [JobApplyController::class, 'applyJob'])->middleware('auth');
+Route::get('/user/notification', [UserController::class, 'notification'])->middleware('auth');
