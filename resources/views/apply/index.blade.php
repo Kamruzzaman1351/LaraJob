@@ -34,7 +34,6 @@
             class="border border-gray-200 rounded p-2 w-full"
             name="email"
             value="{{auth()->user()->email}}"
-            disabled
           />
           @error('email')
             <p class="text-red-500 text-xs mt-1">{{$message}}</p>
@@ -215,15 +214,15 @@
         </div>
 
         <div class="mb-6">
-          <label for="cv" class="inline-block text-lg mb-2">
+          <label for="file_cv" class="inline-block text-lg mb-2">
             Upload Your Updated CV
           </label>
           <input
             type="file"
             class="border border-gray-200 rounded p-2 w-full"
-            name="cv"
+            name="file_cv"
           />
-          @error('cv')
+          @error('file_cv')
             <p class="text-red-500 text-xs mt-1">{{$message}}</p>
           @enderror
         </div>

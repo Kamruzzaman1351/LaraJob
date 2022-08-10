@@ -18,3 +18,4 @@ Route::get('/users/jobs', [JobController::class, 'userJobs']);
 Route::post('/users/authenticate', [UserController::class, 'authenticate']);
 Route::post('/logout', [UserController::class, 'logout'])->middleware('auth');
 Route::get('/apply/{job}', [JobApplyController::class, 'apply'])->middleware('auth');
+Route::post('/apply', [JobApplyController::class, 'applyJob'])->middleware('auth');

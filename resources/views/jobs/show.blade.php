@@ -42,15 +42,24 @@
                   <i class="fa-solid fa-globe"></i> 
                   Visit Website
                 </a>
-
-                @if (auth()->user()->id != $job->user_id)
+                @guest
                   <a
                     href="/apply/{{$job->id}}"
                     class="block bg-green-500 text-white py-2 rounded-xl hover:opacity-80">
                     <i class="fa-solid fa-check"></i> 
                     Apply Now
-                  </a>                    
-                @endif
+                  </a>                  
+                @endguest
+                @auth
+                  @if (auth()->user()->id != $job->user_id)
+                    <a
+                      href="/apply/{{$job->id}}"
+                      class="block bg-green-500 text-white py-2 rounded-xl hover:opacity-80">
+                      <i class="fa-solid fa-check"></i> 
+                      Apply Now
+                    </a>                    
+                  @endif                  
+                @endauth
               </div>
             </div>
         </div>
