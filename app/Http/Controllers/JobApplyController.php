@@ -38,4 +38,17 @@ class JobApplyController extends Controller
         return redirect("/jobs/$job->id")->with('message', "Application Complete");
 
     }
+
+    public function applications(Job $job) {
+        $applications = ApplyJob::where('job_id', $job->id)->get();
+        // dd($applications);
+        return view('apply.lists', ['applications' => $applications, 'job' => $job]);
+    }
+
+    public function fileDownload(ApplyJob $apply) {
+        $file_path = public_path("storage/apply/cv/$apply->file_cv");
+        $file_name = time().'.pdf';
+        $headers = ['Content-Type: application/pdf'];
+        return response()->download($file_path, $file_name, $headers);
+      }
 }
