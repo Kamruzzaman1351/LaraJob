@@ -19,6 +19,9 @@ class JobApplyController extends Controller
     }
 
     public function applyJob(StoreApplyJobRequest $request, Job $job) {
+        if(!$job) {
+            abort(404);
+        }
         $formData = $request->validated();
         if($request->hasFile('file_cv')) {
             $fileName = (new FileUploader)->fileName($request->file('file_cv'));
@@ -40,6 +43,9 @@ class JobApplyController extends Controller
     }
 
     public function applications(Job $job) {
+        if(!$job) {
+            abort(404);
+        }
         $applications = ApplyJob::where('job_id', $job->id)->get();
         // dd($applications);
         return view('apply.lists', ['applications' => $applications, 'job' => $job]);

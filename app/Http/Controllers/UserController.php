@@ -52,7 +52,7 @@ class UserController extends Controller
 
         if(auth()->attempt($userData)) {
             $request->session()->regenerate();
-            return redirect('/')->with('message', "You are now login");
+            return redirect()->intended(route('home'))->with('message', "You are now login");
         }
 
         return back()->withErrors([
